@@ -13,7 +13,6 @@ const disable_account = handler.is_disable_account();
 const disable_settings = handler.is_disable_settings();
 const is_custom_client = handler.is_custom_client();
 const disable_ab = handler.is_disable_ab();
-const hide_server_settings = handler.get_builtin_option("hide-server-settings") == "Y";
 const hide_proxy_settings = handler.get_builtin_option("hide-proxy-settings") == "Y";
 const hide_websocket_settings = handler.get_builtin_option("hide-websocket-settings") == "Y";
 const hide_stop_service = handler.get_builtin_option("hide-stop-service") == "Y";
@@ -527,7 +526,6 @@ class MyIdMenu: Reactor.Component {
                 <Enhancements />
                 {!disable_settings && <li #allow-remote-config-modification><span>{svg_checkmark}</span>{translate('Enable remote configuration modification')}</li>}
                 {!disable_settings && <div .separator />}
-                {!disable_settings && !hide_server_settings && <li #custom-server>{translate('ID/Relay Server')}</li>}
                 {!disable_settings && <li #whitelist title={translate('whitelist_tip')}>{translate('IP Whitelisting')}</li>}
                 {!disable_settings && !hide_proxy_settings && <li #socks5-server>{translate('Socks5/Http(s) Proxy')}</li>}
                 {!disable_settings && !hide_websocket_settings && <li #allow-websocket><span>{svg_checkmark}</span>{translate('Use WebSocket')}</li>}
@@ -624,8 +622,6 @@ class MyIdMenu: Reactor.Component {
         }
         if (me.id == "whitelist") {
             open_whitelist_dialog();
-        } else if (me.id == "custom-server") {
-            open_custom_server_dialog();
         } else if (me.id == "socks5-server") {
             open_proxy_dialog();
         } else if (me.id == "disable-udp") {
@@ -1351,11 +1347,6 @@ event click $(#open-settings) (_, me) {
 }
 
 // Event handlers for outgoing_only mode (when menu items are in main UI, not in MyIdMenu)
-event click $(li#custom-server) (_, me) {
-    if (!outgoing_only) return;
-    open_custom_server_dialog();
-}
-
 event click $(li#whitelist) (_, me) {
     if (!outgoing_only) return;
     open_whitelist_dialog();

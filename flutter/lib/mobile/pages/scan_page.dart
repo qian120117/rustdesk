@@ -9,7 +9,6 @@ import 'package:zxing2/qrcode.dart';
 
 import '../../common.dart';
 import '../../models/platform_model.dart';
-import '../widgets/dialog.dart';
 
 class ScanPage extends StatefulWidget {
   @override
@@ -153,13 +152,6 @@ class _ScanPageState extends State<ScanPage> {
       showToast('Invalid QR code');
       return;
     }
-    try {
-      final sc = ServerConfig.decode(data.substring(7));
-      Timer(Duration(milliseconds: 60), () {
-        showServerSettingsWithValue(sc, gFFI.dialogManager, null);
-      });
-    } catch (e) {
-      showToast('Invalid QR code');
-    }
+    showToast('Server settings are configured in RustDesk2.toml');
   }
 }
